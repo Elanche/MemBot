@@ -45,18 +45,57 @@ ChatBot::~ChatBot()
 //// STUDENT CODE
 ////
 
+ChatBot::ChatBot(const ChatBot& source){
+    cout<<"ChatBot copy constructor\n";
+    _rootNode=source._rootNode;
+    _chatLogic=source._chatLogic;
+    _image=new wxBitmap(*source._image);
+}
+
+ChatBot::ChatBot(ChatBot&& source){
+    cout<<"ChatBot move constructor\n";
+    _rootNode=source._rootNode;
+    _chatLogic=source._chatLogic;
+    _image=source._image;
+    source._rootNode=NULL;
+    source._chatLogic=NULL;
+    source._image=NULL;
+}
+
+ChatBot& ChatBot::operator=(const ChatBot& source){
+    cout<<"ChatBot copy assignment\n";
+    if(&source==this){
+        return *this;
+    }
+    _rootNode=source._rootNode;
+    _chatLogic=source._chatLogic;
+    _image=new wxBitmap(*source._image);
+    return *this;
+}
+
+ChatBot& ChatBot::operator=(ChatBot&& source){
+    cout<<"ChatBot move assignment\n";
+    _rootNode=source._rootNode;
+    _chatLogic=source._chatLogic;
+    _image=source._image;
+    source._rootNode=NULL;
+    source._chatLogic=NULL;
+    source._image=NULL;
+    return *this;
+}
+
 ////
 //// EOF STUDENT CODE
 
 void ChatBot::ReceiveMessageFromUser(std::string message)
 {
     // loop over all edges and keywords and compute Levenshtein distance to query
-    typedef std::pair<GraphEdge *, int> EdgeDist;
+    typedef std::pair<shared_ptr<GraphEdge>, int> EdgeDist;
     std::vector<EdgeDist> levDists; // format is <ptr,levDist>
 
     for (size_t i = 0; i < _currentNode->GetNumberOfChildEdges(); ++i)
     {
-        GraphEdge *edge = _currentNode->GetChildEdgeAtIndex(i);
+        shared_ptr<GraphEdge> edge = _currentNode->GetChildEdgeAtIndex(i);
         for (auto keyword : edge->GetKeywords())
         {
             EdgeDist ed{edge, ComputeLevenshteinDistance(keyword, message)};
@@ -65,7 +104,7 @@ void ChatBot::ReceiveMessageFromUser(std::string message)
     }
 
     // select best fitting edge to proceed along
-    GraphNode *newNode;
+    shared_ptr<GraphNode> newNode;
     if (levDists.size() > 0)
     {
         // sort in ascending order of Levenshtein distance (best fit is at the top)
