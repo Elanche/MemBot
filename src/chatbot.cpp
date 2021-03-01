@@ -55,7 +55,7 @@ ChatBot::ChatBot(const ChatBot& source){
 ChatBot::ChatBot(ChatBot&& source){
     cout<<"ChatBot move constructor\n";
     _rootNode=source._rootNode;
-    _chatLogic=source._chatLogic;
+    _chatLogic=source._chatLogic;_chatLogic->SetChatbotHandle(this);
     _image=source._image;
     source._rootNode=NULL;
     source._chatLogic=NULL;
@@ -78,6 +78,7 @@ ChatBot& ChatBot::operator=(ChatBot&& source){
     cout<<"ChatBot move assignment\n";
     _rootNode=source._rootNode;
     _chatLogic=source._chatLogic;
+    _chatLogic->SetChatbotHandle(this);
     _image=source._image;
     source._rootNode=NULL;
     source._chatLogic=NULL;
