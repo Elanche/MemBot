@@ -206,6 +206,7 @@ void ChatLogic::LoadAnswerGraphFromFile(std::string filename)
     //rootNode->MoveChatbotHere(_chatBot);
     ChatBot bot_instance("../images/chatbot.png");
     bot_instance.SetChatLogicHandle(this);
+    bot_instance.SetRootNode(rootNode);
     rootNode->MoveChatbotHere(std::move(bot_instance));
     ////
     //// EOF STUDENT CODE
@@ -219,6 +220,7 @@ void ChatLogic::SetPanelDialogHandle(ChatBotPanelDialog *panelDialog)
 void ChatLogic::SetChatbotHandle(ChatBot *chatbot)
 {
     _chatBot = chatbot;
+
 }
 
 void ChatLogic::SendMessageToChatbot(std::string message)

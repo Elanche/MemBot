@@ -21,7 +21,6 @@ ChatBot::ChatBot()
 ChatBot::ChatBot(std::string filename)
 {
     std::cout << "ChatBot Constructor" << std::endl;
-    
     // invalidate data handles
     _chatLogic = nullptr;
     _rootNode = nullptr;
@@ -55,7 +54,8 @@ ChatBot::ChatBot(const ChatBot& source){
 ChatBot::ChatBot(ChatBot&& source){
     cout<<"ChatBot move constructor\n";
     _rootNode=source._rootNode;
-    _chatLogic=source._chatLogic;_chatLogic->SetChatbotHandle(this);
+    _chatLogic=source._chatLogic;
+    _chatLogic->SetChatbotHandle(this);
     _image=source._image;
     source._rootNode=NULL;
     source._chatLogic=NULL;
