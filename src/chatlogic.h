@@ -19,7 +19,7 @@ private:
     ////
 
     // data handles (owned)
-    std::vector<shared_ptr<GraphNode>> _nodes;
+    std::vector<unique_ptr<GraphNode>> _nodes;
 
     ////
     //// EOF STUDENT CODE

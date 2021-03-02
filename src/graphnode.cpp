@@ -22,15 +22,14 @@ void GraphNode::AddToken(std::string token)
     _answers.push_back(token);
 }
 
-void GraphNode::AddEdgeToParentNode(shared_ptr<GraphEdge> edge)
+void GraphNode::AddEdgeToParentNode(GraphEdge* edge)
 {
-    weak_ptr<GraphEdge> a=edge;
-    _parentEdges.push_back(a);
+    _parentEdges.push_back(edge);
 }
 
-void GraphNode::AddEdgeToChildNode(shared_ptr<GraphEdge> edge)
+void GraphNode::AddEdgeToChildNode(unique_ptr<GraphEdge> edge)
 {
-    _childEdges.push_back(edge);
+    _childEdges.push_back(std::move(edge));
 }
 
 //// STUDENT CODE
@@ -41,7 +40,7 @@ void GraphNode::MoveChatbotHere(ChatBot chatbot)
     _chatBot.SetCurrentNode(this);
 }
 
-void GraphNode::MoveChatbotToNewNode(shared_ptr<GraphNode> newNode)
+void GraphNode::MoveChatbotToNewNode(GraphNode* newNode)
 {
     newNode->MoveChatbotHere(std::move(_chatBot));
     //_chatBot = NULL; // invalidate pointer at source
@@ -49,12 +48,12 @@ void GraphNode::MoveChatbotToNewNode(shared_ptr<GraphNode> newNode)
 ////
 //// EOF STUDENT CODE
 
-shared_ptr<GraphEdge> GraphNode::GetChildEdgeAtIndex(int index)
+GraphEdge* GraphNode::GetChildEdgeAtIndex(int index)
 {
     //// STUDENT CODE
     ////
 
-    return _childEdges[index];
+    return _childEdges[index].get();
 
     ////
     //// EOF STUDENT CODE
